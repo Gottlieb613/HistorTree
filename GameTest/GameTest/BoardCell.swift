@@ -1,0 +1,14 @@
+//
+//  BoardCell.swift
+//  GameTest
+//
+//  Created by Charlie Gottlieb on 6/6/24.
+//
+
+import Foundation
+
+import UIKit
+
+class BoardCell: UICollectionViewCell {
+    
+}

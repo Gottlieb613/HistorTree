@@ -14,6 +14,9 @@
 		96244D232C0E2C5000515343 /* HistorTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96244D222C0E2C5000515343 /* HistorTreeTests.swift */; };
 		96244D2D2C0E2C5000515343 /* HistorTreeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96244D2C2C0E2C5000515343 /* HistorTreeUITests.swift */; };
 		96244D2F2C0E2C5000515343 /* HistorTreeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96244D2E2C0E2C5000515343 /* HistorTreeUITestsLaunchTests.swift */; };
+		969277022C0E412A00612247 /* Persons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969277012C0E412A00612247 /* Persons.swift */; };
+		969277052C0E4F9800612247 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 969277042C0E4F9800612247 /* SQLite */; };
+		969277072C10CA1900612247 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969277062C10CA1900612247 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,8 @@
 		96244D282C0E2C5000515343 /* HistorTreeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HistorTreeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96244D2C2C0E2C5000515343 /* HistorTreeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorTreeUITests.swift; sourceTree = "<group>"; };
 		96244D2E2C0E2C5000515343 /* HistorTreeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorTreeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		969277012C0E412A00612247 /* Persons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persons.swift; sourceTree = "<group>"; };
+		969277062C10CA1900612247 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				969277052C0E4F9800612247 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,9 +101,11 @@
 			isa = PBXGroup;
 			children = (
 				96244D112C0E2C4D00515343 /* HistorTreeApp.swift */,
+				969277002C0E410900612247 /* Backend */,
 				96244D132C0E2C4D00515343 /* ContentView.swift */,
 				96244D152C0E2C4F00515343 /* Assets.xcassets */,
 				96244D172C0E2C4F00515343 /* Preview Content */,
+				969277062C10CA1900612247 /* ViewController.swift */,
 			);
 			path = HistorTree;
 			sourceTree = "<group>";
@@ -127,6 +135,14 @@
 			path = HistorTreeUITests;
 			sourceTree = "<group>";
 		};
+		969277002C0E410900612247 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				969277012C0E412A00612247 /* Persons.swift */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +159,9 @@
 			dependencies = (
 			);
 			name = HistorTree;
+			packageProductDependencies = (
+				969277042C0E4F9800612247 /* SQLite */,
+			);
 			productName = HistorTree;
 			productReference = 96244D0E2C0E2C4D00515343 /* HistorTree.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +234,9 @@
 				Base,
 			);
 			mainGroup = 96244D052C0E2C4D00515343;
+			packageReferences = (
+				969277032C0E41C000612247 /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
 			productRefGroup = 96244D0F2C0E2C4D00515343 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -258,6 +280,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				96244D142C0E2C4D00515343 /* ContentView.swift in Sources */,
+				969277022C0E412A00612247 /* Persons.swift in Sources */,
+				969277072C10CA1900612247 /* ViewController.swift in Sources */,
 				96244D122C0E2C4D00515343 /* HistorTreeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,6 +606,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		969277032C0E41C000612247 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		969277042C0E4F9800612247 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 969277032C0E41C000612247 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 96244D062C0E2C4D00515343 /* Project object */;
 }
