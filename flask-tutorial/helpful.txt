@@ -1,0 +1,7 @@
+
+if `flask run` gives you 'Could not locate a Flask application', then do 
+    export FLASK_APP=flaskr
+Then can do `flask run`
+
+debug: 
+    flask run --debug
