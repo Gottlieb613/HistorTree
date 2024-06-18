@@ -31,7 +31,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="3B2-x7-wDK" customClass="BoardCell" customModule="GameTest" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="idCell" id="3B2-x7-wDK" customClass="BoardCell" customModule="GameTest" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CHV-wT-gng">
@@ -50,6 +50,9 @@
                                                 <constraint firstItem="W0o-Q6-QpA" firstAttribute="centerY" secondItem="CHV-wT-gng" secondAttribute="centerY" id="ypo-zd-P9r"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="image" destination="W0o-Q6-QpA" id="LEC-kj-kid"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -86,6 +89,10 @@
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="qvi-13-0nb"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="Wxh-yR-hDx" id="AFW-Nh-N0h"/>
+                        <outlet property="turnImage" destination="fCV-vV-Gri" id="TXS-FI-WUd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
