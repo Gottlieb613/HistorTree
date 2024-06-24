@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 enum Tile {
-    case Red
-    case Yellow
+    case Player0
+    case Player1
     case Empty
 }
 
@@ -19,11 +19,11 @@ struct BoardItem {
     var tile: Tile!
     var sensei: Bool!
     
-    func yellowTile() -> Bool {
-        return tile == Tile.Yellow
+    func p0Tile() -> Bool {
+        return tile == Tile.Player0
     }
-    func redTile() -> Bool {
-        return tile == Tile.Red
+    func p1Tile() -> Bool {
+        return tile == Tile.Player1
     }
     func emptyTile() -> Bool {
         return tile == Tile.Empty
@@ -33,8 +33,8 @@ struct BoardItem {
     }
     
     func tileColor() -> UIColor {
-        return redTile() ? .red
-            : yellowTile() ? .yellow
+        return p0Tile() ? .systemBlue
+            : p1Tile() ? .black
             : .white
     }
 }

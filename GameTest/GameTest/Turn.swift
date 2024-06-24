@@ -9,34 +9,34 @@ import Foundation
 import UIKit
 
 enum Turn {
-    case Red
-    case Yellow
+    case Player0
+    case Player1
 }
 
-var currentTurn = Turn.Yellow
+var currentTurn = Turn.Player0
 
 func toggleTurn(_ turnImage: UIImageView) {
-    if yellowTurn() {
-        currentTurn = Turn.Red
-        turnImage.tintColor = .red
+    if p0Turn() {
+        currentTurn = Turn.Player1
+        turnImage.tintColor = .black
     } else {
-        currentTurn = Turn.Yellow
-        turnImage.tintColor = .yellow
+        currentTurn = Turn.Player0
+        turnImage.tintColor = .systemBlue
     }
 }
 
-func yellowTurn() -> Bool {
-    return currentTurn == Turn.Yellow
+func p0Turn() -> Bool {
+    return currentTurn == Turn.Player0
 }
 
 func currentTurnTile() -> Tile {
-    return yellowTurn() ? Tile.Yellow : Tile.Red
+    return p0Turn() ? Tile.Player0 : Tile.Player1
 }
 
 func currentTurnColor() -> UIColor {
-    return yellowTurn() ? .yellow : .red
+    return p0Turn() ? .systemBlue : .black
 }
 
 func currentTurnVictoryMessage() -> String {
-    return yellowTurn() ? "Yellow wins!" : "Red wins!"
+    return p0Turn() ? "Player 0 wins!" : "Player 1 wins!"
 }

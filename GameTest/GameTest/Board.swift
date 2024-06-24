@@ -14,7 +14,7 @@ func resetBoard() {
     board.removeAll()
     
     for row in 0...4 {
-        let player = (row == 0) ? Tile.Red : (row == 4) ? Tile.Yellow : Tile.Empty
+        let player = (row == 0) ? Tile.Player1 : (row == 4) ? Tile.Player0 : Tile.Empty
 
         var rowArray = [BoardItem]()
         for col in 0...4 {
@@ -76,8 +76,30 @@ func placePiece(cell: BoardCell, piece: BoardItem, origRow: Int, origCol: Int, n
 
 
 func victoryAchieved() -> Bool {
-    return false
-//    return horizontalVictory() || verticalVictory() || diagVictory()
+    var r = 0
+    var senseisCounted = 0
+    for row in board {
+        var c = 0
+        
+        for tile in row {
+            if tile.senseiTile() {
+                senseisCounted += 1
+            }
+            
+            if c == 2 {
+                if r == 0 && tile.p0Tile() && tile.senseiTile() {
+                    return true
+                }
+                if r == 4 && tile.p1Tile() && tile.senseiTile() {
+                    return true
+                }
+            }
+            c+=1
+        }
+        r+=1
+    }
+    
+    return senseisCounted < 2
 }
 
 

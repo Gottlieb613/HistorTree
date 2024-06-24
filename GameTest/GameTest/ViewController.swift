@@ -14,8 +14,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var turnImage: UIImageView!
     
-    var redScore = 0
-    var yellowScore = 0
+    var p0Score = 0
+    var p1Score = 0
     
     var selectedItem: BoardItem = BoardItem(indexPath: IndexPath.init(item: 5, section: 5), tile: Tile.Empty, sensei: false)
     var selectedItemRow = -1
@@ -87,12 +87,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     oldCell.image.tintColor = UIColor.white
                     oldCell.image.image = UIImage(systemName: "circle.fill")
                     
+                    if victoryAchieved() {
+                        if p0Turn() {
+                            p0Score += 1
+                        } else {
+                            p1Score += 1
+                        }
+                        
+                        resultAlert(currentTurnVictoryMessage())
+                    }
                     
-                    swapCards(cardList: &cardList, selection: yellowTurn() ? selectedCardNum : 4)
+                    swapCards(cardList: &cardList, selection: p0Turn() ? selectedCardNum : 4)
                     toggleTurn(turnImage)
                     
-                    selectedCard = cardList[yellowTurn() ? 0 : 4]
-            
+                    selectedCard = cardList[p0Turn() ? 0 : 4]
                 }
             }
         }
@@ -100,10 +108,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         refreshImages()
     }
     
+    func drawCell(cell: BoardCell, boardItem: BoardItem) {
+        cell.image.tintColor = boardItem.tileColor()
+        cell.image.image = boardItem.sensei ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle.fill")
+    }
+    
     // ---- CARD BUTTONS -----
     
     @IBAction func card0Tapped(_ sender: UIButton) {
-        if yellowTurn() {
+        if p0Turn() {
             selectedCard = cardList[0]
             selectedCardNum = 0
             print("card0: \(selectedCard)")
@@ -112,7 +125,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
 
     @IBAction func card1Tapped(_ sender: UIButton) {
-        if yellowTurn() {
+        if p0Turn() {
             selectedCard = cardList[1]
             selectedCardNum = 1
             print("card1: \(selectedCard)")
@@ -121,7 +134,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     
     func resultAlert(_ title: String) {
-        let message = "\nRed: \(redScore)\n\nYellow: \(yellowScore)"
+        let message = "\nPlayer 0: \(p0Score)\n\nPlayer1: \(p1Score)"
         let ac = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         ac.addAction(UIAlertAction(title: "Reset", style: .default, handler: {
             [self] (_) in
@@ -133,9 +146,19 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func resetCells() {
-        for cell in collectionView.visibleCells as! [BoardCell] {
-            cell.image.tintColor = .white
+        for row in 0...4 {
+            for col in 0...4 {
+                let boardItem = board[row][col]
+                if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell {
+                    drawCell(cell: cell, boardItem: boardItem)
+                }
+            }
         }
+            
+            
+//        for cell in collectionView.visibleCells as! [BoardCell] {
+//            drawCell(cell: cell, indexPath: )
+//        }
     }
     
     
