@@ -21,8 +21,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var selectedItemRow = -1
     var selectedItemCol = -1
     var (selectedCard, cardList) = makeCardList()
+    var selectedCardNum = 0
     
-//    var selectedCard: Card = cardList[0]
+    @IBOutlet weak var card0: UIButton!
+    @IBOutlet weak var card1: UIButton!
     
     
     override func viewDidLoad() {
@@ -30,7 +32,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         resetBoard()
         setCellWidthHeight()
         
-//        selectedCard = cardTiger
+        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
+        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
     }
     
     func setCellWidthHeight() {
@@ -47,6 +50,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ cv: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return board[section].count
     }
+    
+    // ---- COLLECTION VIEW ----
 
     func collectionView(_ cv: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cv.dequeueReusableCell(withReuseIdentifier: "idCell", for: indexPath) as! BoardCell
@@ -83,49 +88,37 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     oldCell.image.image = UIImage(systemName: "circle.fill")
                     
                     
-                    swapCards(cardList: &cardList, selection: yellowTurn() ? 0 : 4)
+                    swapCards(cardList: &cardList, selection: yellowTurn() ? selectedCardNum : 4)
                     toggleTurn(turnImage)
                     
                     selectedCard = cardList[yellowTurn() ? 0 : 4]
             
                 }
             }
-            
-            
-            
-            
-            /*
-            
-            if boardItem.emptyTile() {
-                if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell {
-                    cell.image.tintColor = currentTurnColor()
-                    boardItem.tile = currentTurnTile()
-                    updateBoardWithBoardItem(boardItem)
-                    
-                    if victoryAchieved() {
-                        if yellowTurn() {
-                            yellowScore += 1
-                        } else {
-                            redScore += 1
-                        }
-                        
-                        resultAlert(currentTurnVictoryMessage())
-                    }
-                    
-                    if boardIsFull() {
-                        resultAlert("Draw")
-                    }
-                    
-                    toggleTurn(turnImage)
-                    
-                }
-            }
-             */
+        }
+        collectionView.reloadData()
+        refreshImages()
+    }
+    
+    // ---- CARD BUTTONS -----
+    
+    @IBAction func card0Tapped(_ sender: UIButton) {
+        if yellowTurn() {
+            selectedCard = cardList[0]
+            selectedCardNum = 0
+            print("card0: \(selectedCard)")
         }
         
-        
-        collectionView.reloadData()
     }
+
+    @IBAction func card1Tapped(_ sender: UIButton) {
+        if yellowTurn() {
+            selectedCard = cardList[1]
+            selectedCardNum = 1
+            print("card1: \(selectedCard)")
+        }
+    }
+    
     
     func resultAlert(_ title: String) {
         let message = "\nRed: \(redScore)\n\nYellow: \(yellowScore)"
@@ -144,6 +137,43 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             cell.image.tintColor = .white
         }
     }
+    
+    
+    func refreshImages() {
+        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
+        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+    }
 
 }
 
+
+
+
+
+/*
+
+if boardItem.emptyTile() {
+    if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell {
+        cell.image.tintColor = currentTurnColor()
+        boardItem.tile = currentTurnTile()
+        updateBoardWithBoardItem(boardItem)
+        
+        if victoryAchieved() {
+            if yellowTurn() {
+                yellowScore += 1
+            } else {
+                redScore += 1
+            }
+            
+            resultAlert(currentTurnVictoryMessage())
+        }
+        
+        if boardIsFull() {
+            resultAlert("Draw")
+        }
+        
+        toggleTurn(turnImage)
+        
+    }
+}
+ */
