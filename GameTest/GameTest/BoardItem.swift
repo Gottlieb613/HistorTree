@@ -17,6 +17,7 @@ enum Tile {
 struct BoardItem {
     var indexPath: IndexPath!
     var tile: Tile!
+    var sensei: Bool!
     
     func yellowTile() -> Bool {
         return tile == Tile.Yellow
@@ -27,14 +28,13 @@ struct BoardItem {
     func emptyTile() -> Bool {
         return tile == Tile.Empty
     }
+    func senseiTile() -> Bool {
+        return sensei
+    }
     
     func tileColor() -> UIColor {
-        if redTile() {
-            return .red
-        }
-        if yellowTile() {
-            return .yellow
-        }
-        return .white
+        return redTile() ? .red
+            : yellowTile() ? .yellow
+            : .white
     }
 }

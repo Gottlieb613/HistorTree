@@ -13,15 +13,21 @@ var board = [[BoardItem]]()
 func resetBoard() {
     board.removeAll()
     
-    for row in 0...5 {
+    for row in 0...4 {
+        let player = (row == 0) ? Tile.Red : (row == 4) ? Tile.Yellow : Tile.Empty
+
         var rowArray = [BoardItem]()
-        for col in 0...6 {
+        for col in 0...4 {
             let indexPath = IndexPath.init(item: col, section: row)
-            let boardItem = BoardItem(indexPath: indexPath, tile: Tile.Empty)
+            let boardItem = BoardItem(indexPath: indexPath, tile: player, sensei: isSensei(row, col))
             rowArray.append(boardItem)
         }
         board.append(rowArray)
     }
+}
+
+func isSensei(_ row: Int, _ col: Int) -> Bool {
+    return ((row == 0) || (row == 4)) && col == 2
 }
 
 func getBoardItem(_ indexPath: IndexPath) -> BoardItem {
@@ -29,7 +35,7 @@ func getBoardItem(_ indexPath: IndexPath) -> BoardItem {
 }
 
 func getLowestEmptyBoardItem(_ col: Int) -> BoardItem? {
-    for row in (0...5).reversed() {
+    for row in (0...4).reversed() {
         let boardItem = board[row][col]
         if boardItem.emptyTile() {
             return boardItem
@@ -56,9 +62,22 @@ func boardIsFull() -> Bool {
     return true
 }
 
+func placePiece(cell: BoardCell, piece: BoardItem, origRow: Int, origCol: Int, newRow: Int, newCol: Int) {
+    
+    cell.image.tintColor = piece.tileColor()
+    cell.image.image = piece.sensei ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle.fill")
+    
+    board[newRow][newCol] = piece
+    
+    let origSpotIndexPath = IndexPath.init(item: origCol, section: origRow)
+    board[origRow][origCol] = BoardItem(indexPath: origSpotIndexPath, tile: Tile.Empty, sensei: false)
+}
+
+
 
 func victoryAchieved() -> Bool {
-    return horizontalVictory() || verticalVictory() || diagVictory()
+    return false
+//    return horizontalVictory() || verticalVictory() || diagVictory()
 }
 
 
@@ -80,7 +99,7 @@ func horizontalVictory() -> Bool {
 }
 
 func verticalVictory() -> Bool {
-    for col in 0...board.count {
+    for col in 0...(board[0].count-1) {
         var consecutive = 0
         for row in board {
             if row[col].tile == currentTurnTile() {
