@@ -37,4 +37,10 @@ struct BoardItem {
             : p1Tile() ? .black
             : .white
     }
+    
+    func toString() -> String {
+        return emptyTile() ? "." :
+        p0Tile() ? senseiTile() ? "P" : "p" :
+        senseiTile() ? "D" : "d"
+    }
 }

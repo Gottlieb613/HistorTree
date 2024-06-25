@@ -34,6 +34,17 @@ func getBoardItem(_ indexPath: IndexPath) -> BoardItem {
     return board[indexPath.section][indexPath.item]
 }
 
+func printBoard() {
+    print("------")
+    for row in 0...4 {
+        for col in 0...4 {
+            print("\(board[row][col].toString())", terminator:"")
+        }
+        print()
+    }
+    print("------")
+}
+
 func getLowestEmptyBoardItem(_ col: Int) -> BoardItem? {
     for row in (0...4).reversed() {
         let boardItem = board[row][col]

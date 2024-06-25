@@ -15,13 +15,15 @@ enum Turn {
 
 var currentTurn = Turn.Player0
 
-func toggleTurn(_ turnImage: UIImageView) {
+func toggleTurn(_ colorBar: UIView) {
     if p0Turn() {
         currentTurn = Turn.Player1
-        turnImage.tintColor = .black
+        UIView.animate(withDuration: 0.5) {
+            colorBar.backgroundColor = .black}
     } else {
         currentTurn = Turn.Player0
-        turnImage.tintColor = .systemBlue
+        UIView.animate(withDuration: 0.5) {
+            colorBar.backgroundColor = .systemBlue}
     }
 }
 

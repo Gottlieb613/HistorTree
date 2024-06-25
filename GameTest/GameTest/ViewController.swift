@@ -6,13 +6,22 @@
 //
 
 
-//NEXT TODO: make card selection. Can do so in some makeshift manner before moving on to any display
+//NEXT TODO: 
+// Figure out cards issue.
+// Add cards to top and 'next' cards.
+// Highlight possible spots for piece-card
+// X Fix newgame issue.
+// 'Restart' button.
+// Change name to Onitama.
+// Move to other git.
+// Change from storyboard to SwiftUI
+//
 
 import UIKit
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var turnImage: UIImageView!
+    @IBOutlet weak var colorBar: UIView!
     
     var p0Score = 0
     var p1Score = 0
@@ -25,7 +34,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var card0: UIButton!
     @IBOutlet weak var card1: UIButton!
-    
+    @IBOutlet weak var card3: UIImageView!
+    @IBOutlet weak var card4: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +44,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
         card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+        
+        card3.image = UIImage(named: "\(cardList[3])")
+        card3.transform = CGAffineTransform(rotationAngle: .pi)
+        card4.image = UIImage(named: "\(cardList[4])")
+        card4.transform = CGAffineTransform(rotationAngle: .pi)
+        
+        card3.isUserInteractionEnabled = true
+        card4.isUserInteractionEnabled = true
+        
+        let card3TapGesture = UITapGestureRecognizer(target: self, action: #selector(card3Tapped))
+        let card4TapGesture = UITapGestureRecognizer(target: self, action: #selector(card4Tapped))
+        card3.addGestureRecognizer(card3TapGesture)
+        card4.addGestureRecognizer(card4TapGesture)
+                                                            
     }
     
     func setCellWidthHeight() {
@@ -51,14 +75,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         return board[section].count
     }
     
-    // ---- COLLECTION VIEW ----
+  // ---- COLLECTION VIEW ----
 
     func collectionView(_ cv: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cv.dequeueReusableCell(withReuseIdentifier: "idCell", for: indexPath) as! BoardCell
         
         let boardItem = getBoardItem(indexPath)
-        cell.image.tintColor = boardItem.tileColor()
-        cell.image.image = boardItem.sensei ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle.fill")
+        drawCell(cell: cell, boardItem: boardItem)
         
         return cell
     }
@@ -80,14 +103,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     //--move is legal
                     print("Place: r\(row) c\(col)")
                     
-                    placePiece(cell: cell, piece: selectedItem, origRow: selectedItemRow, origCol: selectedItemCol, newRow: row, newCol: col)
-    
-                    let oldCell = collectionView.cellForItem(at: selectedItem.indexPath) as! BoardCell
-                    
-                    oldCell.image.tintColor = UIColor.white
-                    oldCell.image.image = UIImage(systemName: "circle.fill")
-                    
-                    if victoryAchieved() {
+                    // Check win
+                    if board[row][col].senseiTile() ||
+                        (selectedItem.senseiTile() && col == 2 && ((row == 0 && selectedItem.p0Tile()) || (row == 4 && selectedItem.p1Tile())) ) {
                         if p0Turn() {
                             p0Score += 1
                         } else {
@@ -95,12 +113,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                         }
                         
                         resultAlert(currentTurnVictoryMessage())
+                        
+                    } else {
+                        placePiece(cell: cell, piece: selectedItem, origRow: selectedItemRow, origCol: selectedItemCol, newRow: row, newCol: col)
+        
+                        let oldCell = collectionView.cellForItem(at: selectedItem.indexPath) as! BoardCell
+                        
+                        oldCell.image.tintColor = UIColor.white
+                        oldCell.image.image = UIImage(systemName: "circle.fill")
+                        
+                        swapCards(cardList: &cardList, selection: p0Turn() ? selectedCardNum : 4)
+                        toggleTurn(colorBar)
+                        
+                        selectedCard = cardList[p0Turn() ? 0 : 4]
                     }
                     
-                    swapCards(cardList: &cardList, selection: p0Turn() ? selectedCardNum : 4)
-                    toggleTurn(turnImage)
                     
-                    selectedCard = cardList[p0Turn() ? 0 : 4]
+    
                 }
             }
         }
@@ -113,7 +142,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.image.image = boardItem.sensei ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle.fill")
     }
     
-    // ---- CARD BUTTONS -----
+  // ---- CARD BUTTONS -----
     
     @IBAction func card0Tapped(_ sender: UIButton) {
         if p0Turn() {
@@ -132,6 +161,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
+    @objc func card3Tapped() {
+        // Handle tap action here
+        if !p0Turn() {
+            selectedCard = cardList[3]
+            selectedCardNum = 3
+            print("card3: \(selectedCard)")
+        }
+    }
+    
+    @objc func card4Tapped() {
+        // Handle tap action here
+        if !p0Turn() {
+            selectedCard = cardList[4]
+            selectedCardNum = 4
+            print("card4: \(selectedCard)")
+        }
+    }
+    
     
     func resultAlert(_ title: String) {
         let message = "\nPlayer 0: \(p0Score)\n\nPlayer1: \(p1Score)"
@@ -140,8 +187,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             [self] (_) in
             resetBoard()
             self.resetCells()
+            resetCards()
         }))
         self.present(ac, animated: true)
+        
+        
        
     }
     
@@ -154,15 +204,21 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 }
             }
         }
-            
-            
-//        for cell in collectionView.visibleCells as! [BoardCell] {
-//            drawCell(cell: cell, indexPath: )
-//        }
     }
     
     
     func refreshImages() {
+        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
+        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+        
+        card3.image = UIImage(named: "\(cardList[3])")
+        card3.transform = CGAffineTransform(rotationAngle: .pi)
+        card4.image = UIImage(named: "\(cardList[4])")
+        card4.transform = CGAffineTransform(rotationAngle: .pi)
+    }
+    
+    func resetCards() {
+        (selectedCard, cardList) = makeCardList()
         card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
         card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
     }
