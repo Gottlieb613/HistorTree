@@ -1,6 +1,6 @@
 //
 //  BoardItem.swift
-//  GameTest
+//  Onitama
 //
 //  Created by Charlie Gottlieb on 6/7/24.
 //

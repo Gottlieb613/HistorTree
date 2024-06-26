@@ -1,14 +1,13 @@
 //
 //  ViewController.swift
-//  GameTest
+//  Onitama
 //
 //  Created by Charlie Gottlieb on 6/6/24.
 //
 
 
 //NEXT TODO:
-// 'Restart' button.
-// Change name to Onitama.
+// 'Restart' button
 // Move to other git.
 //
 
@@ -229,6 +228,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             resetBoard()
             self.resetCells()
             resetCards()
+            toggleTurn(colorBar) // losing player should start next game
         }))
         self.present(ac, animated: true)
     }
@@ -242,6 +242,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 }
             }
         }
+        selectedItemRow = -1
+        selectedItemCol = -1
     }
     
     
@@ -307,43 +309,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func resetCards() {
+        legalTiles = []
         (selectedCard, cardList) = makeCardList()
-//        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
-//        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
-        
         refreshImages()
     }
 
 }
 
-
-
-
-
-/*
-
-if boardItem.emptyTile() {
-    if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell {
-        cell.image.tintColor = currentTurnColor()
-        boardItem.tile = currentTurnTile()
-        updateBoardWithBoardItem(boardItem)
-        
-        if victoryAchieved() {
-            if yellowTurn() {
-                yellowScore += 1
-            } else {
-                redScore += 1
-            }
-            
-            resultAlert(currentTurnVictoryMessage())
-        }
-        
-        if boardIsFull() {
-            resultAlert("Draw")
-        }
-        
-        toggleTurn(turnImage)
-        
-    }
-}
- */
