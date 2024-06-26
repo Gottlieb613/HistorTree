@@ -7,10 +7,6 @@
 
 
 //NEXT TODO:
-// Change bottom buttons to UIImageViews like the top cards, just exactly the same (but no rotation)
-// Add 'next' cards
-// Make cards look a lot better
-// Highlight possible spots for piece-card
 // 'Restart' button.
 // Change name to Onitama.
 // Move to other git.
@@ -21,6 +17,12 @@ import UIKit
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var colorBar: UIView!
+    @IBOutlet weak var card0: UIImageView!
+    @IBOutlet weak var card1: UIImageView!
+    @IBOutlet weak var card3: UIImageView!
+    @IBOutlet weak var card4: UIImageView!
+    @IBOutlet weak var topNext: UIImageView!
+    @IBOutlet weak var bottomNext: UIImageView!
     
     var p0Score = 0
     var p1Score = 0
@@ -30,26 +32,18 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var selectedItemCol = -1
     var (selectedCard, cardList) = makeCardList()
     var selectedCardNum = 0
+    var legalTiles: [(Int, Int)] = []
     
 //    @IBOutlet weak var card0: UIButton!
 //    @IBOutlet weak var card1: UIButton!
-    @IBOutlet weak var card0: UIImageView!
-    @IBOutlet weak var card1: UIImageView!
-    @IBOutlet weak var card3: UIImageView!
-    @IBOutlet weak var card4: UIImageView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         resetBoard()
         setCellWidthHeight()
         
-        card0.image = UIImage(named: "\(cardList[0])")
-        card1.image = UIImage(named: "\(cardList[1])")
-        
-        card3.image = UIImage(named: "\(cardList[3])")
-        card3.transform = CGAffineTransform(rotationAngle: .pi)
-        card4.image = UIImage(named: "\(cardList[4])")
-        card4.transform = CGAffineTransform(rotationAngle: .pi)
+        refreshImages()
         
         card0.isUserInteractionEnabled = true
         card1.isUserInteractionEnabled = true
@@ -66,7 +60,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         card4.addGestureRecognizer(card4TapGesture)
         
         highlightSelectedCard()
-                                                            
     }
     
     func setCellWidthHeight() {
@@ -90,7 +83,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let cell = cv.dequeueReusableCell(withReuseIdentifier: "idCell", for: indexPath) as! BoardCell
         
         let boardItem = getBoardItem(indexPath)
-        drawCell(cell: cell, boardItem: boardItem)
+        drawCell(cell: cell, boardItem: boardItem, row: indexPath.section, col: indexPath.item)
         
         return cell
     }
@@ -106,9 +99,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             selectedItemRow = row
             selectedItemCol = col
             
+            setLegalTiles()
+            
         } else {
             if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell { // selected spot
-                if selectedCard.getLegalTiles(board, pieceRow: selectedItemRow, pieceCol: selectedItemCol).contains(where: { $0 == (row, col) }) {
+                if legalTiles.contains(where: { $0 == (row, col) }) {
                     //--move is legal
                     print("Place: r\(row) c\(col)")
                     
@@ -132,6 +127,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                         
                         resultAlert(currentTurnVictoryMessage())
                         
+                    // No win
                     } else {
                         placePiece(cell: cell, piece: selectedItem, origRow: selectedItemRow, origCol: selectedItemCol, newRow: row, newCol: col)
         
@@ -146,10 +142,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                         selectedCardNum = p0Turn() ? 0 : 4
                         selectedCard = cardList[selectedCardNum]
                         
+                        selectedItemRow = -1
+                        selectedItemCol = -1
+                        legalTiles = []
                     }
-                    
-                    
-    
                 }
             }
         }
@@ -157,9 +153,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         refreshImages()
     }
     
-    func drawCell(cell: BoardCell, boardItem: BoardItem) {
+    func drawCell(cell: BoardCell, boardItem: BoardItem, row: Int, col: Int) {
         cell.image.tintColor = boardItem.tileColor()
         cell.image.image = boardItem.sensei ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle.fill")
+        
+        if (row == selectedItemRow && col == selectedItemCol) {
+            cell.backgroundColor = .systemRed
+            
+        } else if legalTiles.contains(where: { $0 == (row, col) }) {
+            cell.backgroundColor = .systemOrange
+            
+        } else {
+            cell.backgroundColor = .clear
+        }
+        
     }
     
   // ---- CARD BUTTONS -----
@@ -172,6 +179,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             print("card0: \(selectedCard)")
         }
         highlightSelectedCard()
+        setLegalTiles()
+        collectionView.reloadData()
     }
     
     @objc func card1Tapped() {
@@ -182,6 +191,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             print("card1: \(selectedCard)")
         }
         highlightSelectedCard()
+        setLegalTiles()
+        collectionView.reloadData()
     }
     
     @objc func card3Tapped() {
@@ -192,6 +203,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             print("card3: \(selectedCard)")
         }
         highlightSelectedCard()
+        setLegalTiles()
+        collectionView.reloadData()
     }
     
     @objc func card4Tapped() {
@@ -203,6 +216,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             refreshImages()
         }
         highlightSelectedCard()
+        setLegalTiles()
+        collectionView.reloadData()
     }
     
     
@@ -216,9 +231,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             resetCards()
         }))
         self.present(ac, animated: true)
-        
-        
-       
     }
     
     func resetCells() {
@@ -226,7 +238,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             for col in 0...4 {
                 let boardItem = board[row][col]
                 if let cell = collectionView.cellForItem(at: boardItem.indexPath) as? BoardCell {
-                    drawCell(cell: cell, boardItem: boardItem)
+                    drawCell(cell: cell, boardItem: boardItem, row: -1, col: -1)
                 }
             }
         }
@@ -244,7 +256,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         card4.image = UIImage(named: "\(cardList[4])")
         card4.transform = CGAffineTransform(rotationAngle: .pi)
         
+        if (p0Turn()) {
+            bottomNext.image = UIImage(named: "\(cardList[2])")
+            topNext.image = UIImage(systemName: ".rectangle")
+            topNext.tintColor = .black
+        } else  {
+            topNext.image = UIImage(named: "\(cardList[2])")
+            bottomNext.image = UIImage(systemName: ".rectangle")
+            bottomNext.tintColor = .black
+            topNext.transform = CGAffineTransform(rotationAngle: .pi)
+        }
+        
         highlightSelectedCard()
+    }
+    
+    func setLegalTiles() {
+        if selectedItemRow != -1 && selectedItemCol != -1 {
+            legalTiles = selectedCard.getLegalTiles(board, pieceRow: selectedItemRow, pieceCol: selectedItemCol)
+        }
     }
     
     func highlightSelectedCard() {
