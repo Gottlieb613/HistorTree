@@ -6,15 +6,14 @@
 //
 
 
-//NEXT TODO: 
-// Figure out cards issue.
-// Add cards to top and 'next' cards.
+//NEXT TODO:
+// Change bottom buttons to UIImageViews like the top cards, just exactly the same (but no rotation)
+// Add 'next' cards
+// Make cards look a lot better
 // Highlight possible spots for piece-card
-// X Fix newgame issue.
 // 'Restart' button.
 // Change name to Onitama.
 // Move to other git.
-// Change from storyboard to SwiftUI
 //
 
 import UIKit
@@ -32,8 +31,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var (selectedCard, cardList) = makeCardList()
     var selectedCardNum = 0
     
-    @IBOutlet weak var card0: UIButton!
-    @IBOutlet weak var card1: UIButton!
+//    @IBOutlet weak var card0: UIButton!
+//    @IBOutlet weak var card1: UIButton!
+    @IBOutlet weak var card0: UIImageView!
+    @IBOutlet weak var card1: UIImageView!
     @IBOutlet weak var card3: UIImageView!
     @IBOutlet weak var card4: UIImageView!
     
@@ -42,21 +43,29 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         resetBoard()
         setCellWidthHeight()
         
-        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
-        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+        card0.image = UIImage(named: "\(cardList[0])")
+        card1.image = UIImage(named: "\(cardList[1])")
         
         card3.image = UIImage(named: "\(cardList[3])")
         card3.transform = CGAffineTransform(rotationAngle: .pi)
         card4.image = UIImage(named: "\(cardList[4])")
         card4.transform = CGAffineTransform(rotationAngle: .pi)
         
+        card0.isUserInteractionEnabled = true
+        card1.isUserInteractionEnabled = true
         card3.isUserInteractionEnabled = true
         card4.isUserInteractionEnabled = true
         
+        let card0TapGesture = UITapGestureRecognizer(target: self, action: #selector(card0Tapped))
+        let card1TapGesture = UITapGestureRecognizer(target: self, action: #selector(card1Tapped))
         let card3TapGesture = UITapGestureRecognizer(target: self, action: #selector(card3Tapped))
         let card4TapGesture = UITapGestureRecognizer(target: self, action: #selector(card4Tapped))
+        card0.addGestureRecognizer(card0TapGesture)
+        card1.addGestureRecognizer(card1TapGesture)
         card3.addGestureRecognizer(card3TapGesture)
         card4.addGestureRecognizer(card4TapGesture)
+        
+        highlightSelectedCard()
                                                             
     }
     
@@ -106,6 +115,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     // Check win
                     if board[row][col].senseiTile() ||
                         (selectedItem.senseiTile() && col == 2 && ((row == 0 && selectedItem.p0Tile()) || (row == 4 && selectedItem.p1Tile())) ) {
+                        
+                        //still want to move piece so looks good
+                        placePiece(cell: cell, piece: selectedItem, origRow: selectedItemRow, origCol: selectedItemCol, newRow: row, newCol: col)
+        
+                        let oldCell = collectionView.cellForItem(at: selectedItem.indexPath) as! BoardCell
+                        
+                        oldCell.image.tintColor = UIColor.white
+                        oldCell.image.image = UIImage(systemName: "circle.fill")
+                        
                         if p0Turn() {
                             p0Score += 1
                         } else {
@@ -122,10 +140,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                         oldCell.image.tintColor = UIColor.white
                         oldCell.image.image = UIImage(systemName: "circle.fill")
                         
-                        swapCards(cardList: &cardList, selection: p0Turn() ? selectedCardNum : 4)
+                        swapCards(cardList: &cardList, selection: selectedCardNum)
                         toggleTurn(colorBar)
                         
-                        selectedCard = cardList[p0Turn() ? 0 : 4]
+                        selectedCardNum = p0Turn() ? 0 : 4
+                        selectedCard = cardList[selectedCardNum]
+                        
                     }
                     
                     
@@ -144,21 +164,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
   // ---- CARD BUTTONS -----
     
-    @IBAction func card0Tapped(_ sender: UIButton) {
+    @objc func card0Tapped() {
+        // Handle tap action here
         if p0Turn() {
             selectedCard = cardList[0]
             selectedCardNum = 0
             print("card0: \(selectedCard)")
         }
-        
+        highlightSelectedCard()
     }
-
-    @IBAction func card1Tapped(_ sender: UIButton) {
+    
+    @objc func card1Tapped() {
+        // Handle tap action here
         if p0Turn() {
             selectedCard = cardList[1]
             selectedCardNum = 1
             print("card1: \(selectedCard)")
         }
+        highlightSelectedCard()
     }
     
     @objc func card3Tapped() {
@@ -168,6 +191,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             selectedCardNum = 3
             print("card3: \(selectedCard)")
         }
+        highlightSelectedCard()
     }
     
     @objc func card4Tapped() {
@@ -176,7 +200,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             selectedCard = cardList[4]
             selectedCardNum = 4
             print("card4: \(selectedCard)")
+            refreshImages()
         }
+        highlightSelectedCard()
     }
     
     
@@ -208,19 +234,55 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     
     func refreshImages() {
-        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
-        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+//        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
+//        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
         
+        card0.image = UIImage(named: "\(cardList[0])")
+        card1.image = UIImage(named: "\(cardList[1])")
         card3.image = UIImage(named: "\(cardList[3])")
         card3.transform = CGAffineTransform(rotationAngle: .pi)
         card4.image = UIImage(named: "\(cardList[4])")
         card4.transform = CGAffineTransform(rotationAngle: .pi)
+        
+        highlightSelectedCard()
+    }
+    
+    func highlightSelectedCard() {
+        switch selectedCardNum {
+            case 0:
+                card0.backgroundColor = .systemTeal
+                card1.backgroundColor = .clear
+                card3.backgroundColor = .clear
+                card4.backgroundColor = .clear
+            case 1:
+                card0.backgroundColor = .clear
+                card1.backgroundColor = .systemTeal
+                card3.backgroundColor = .clear
+                card4.backgroundColor = .clear
+            case 3:
+                card0.backgroundColor = .clear
+                card1.backgroundColor = .clear
+                card3.backgroundColor = .systemTeal
+                card4.backgroundColor = .clear
+            case 4:
+                card0.backgroundColor = .clear
+                card1.backgroundColor = .clear
+                card3.backgroundColor = .clear
+                card4.backgroundColor = .systemTeal
+            default:
+                card0.backgroundColor = .clear
+                card1.backgroundColor = .clear
+                card3.backgroundColor = .clear
+                card4.backgroundColor = .clear
+        }
     }
     
     func resetCards() {
         (selectedCard, cardList) = makeCardList()
-        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
-        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+//        card0.setImage(UIImage(named: "\(cardList[0])"), for: .normal)
+//        card1.setImage(UIImage(named: "\(cardList[1])"), for: .normal)
+        
+        refreshImages()
     }
 
 }

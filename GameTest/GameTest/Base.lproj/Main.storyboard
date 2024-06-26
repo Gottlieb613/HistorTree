@@ -60,28 +60,6 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="1jE-7U-ZPb"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YW3-nB-aOT" userLabel="card0">
-                                <rect key="frame" x="56" y="723" width="24" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="n7o-Mx-gtH" userLabel="height = 300"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
-                                <connections>
-                                    <action selector="card0Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gMi-Vh-eA0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dn-Wr-fi7" userLabel="card1">
-                                <rect key="frame" x="311" y="723" width="24" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="F5x-ac-hGO" userLabel="height = 300"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
-                                <connections>
-                                    <action selector="card1Tapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lzZ-7N-GOS"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ZK-ky-LLw" userLabel="colorBar">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="66"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
@@ -101,34 +79,43 @@
                                 <rect key="frame" x="223" y="74" width="170" height="145"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uJC-eC-diR" userLabel="card0">
+                                <rect key="frame" x="-35" y="664" width="240" height="128"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="STP-aN-y5E" userLabel="card1">
+                                <rect key="frame" x="188" y="664" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="top" secondItem="ymF-eE-oZE" secondAttribute="bottom" constant="51" id="3HE-Ah-GiB" userLabel="card3.height = 300"/>
-                            <constraint firstItem="6dn-Wr-fi7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YW3-nB-aOT" secondAttribute="trailing" constant="8" symbolic="YES" id="3Rw-Lk-inJ"/>
+                            <constraint firstItem="STP-aN-y5E" firstAttribute="width" secondItem="uJC-eC-diR" secondAttribute="width" id="5XN-af-4hs"/>
                             <constraint firstItem="9ZK-ky-LLw" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6jV-I9-9rN"/>
+                            <constraint firstItem="uJC-eC-diR" firstAttribute="height" secondItem="HGW-4k-csY" secondAttribute="height" multiplier="0.882759" id="7Nz-eZ-ZMa"/>
+                            <constraint firstItem="STP-aN-y5E" firstAttribute="height" secondItem="uJC-eC-diR" secondAttribute="height" id="G7a-nO-6pm"/>
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Hpg-vZ-Vs9"/>
                             <constraint firstItem="ymF-eE-oZE" firstAttribute="width" secondItem="HGW-4k-csY" secondAttribute="width" id="JFG-yU-MqJ"/>
                             <constraint firstItem="HGW-4k-csY" firstAttribute="leading" secondItem="9ZK-ky-LLw" secondAttribute="leading" id="Kb7-ho-MEH" userLabel="card3.top = colorBar.bottom"/>
+                            <constraint firstItem="STP-aN-y5E" firstAttribute="centerX" secondItem="ymF-eE-oZE" secondAttribute="centerX" id="L4c-9E-EIp"/>
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="1:1" id="M6J-Wb-hZ6"/>
+                            <constraint firstItem="uJC-eC-diR" firstAttribute="centerX" secondItem="HGW-4k-csY" secondAttribute="centerX" id="NJI-zg-nc0"/>
                             <constraint firstItem="ymF-eE-oZE" firstAttribute="centerY" secondItem="HGW-4k-csY" secondAttribute="centerY" id="NUM-9T-uvv"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6dn-Wr-fi7" secondAttribute="bottom" constant="60" id="TlM-PL-IYY" userLabel="Safe Area.bottom = card1.bottom + 40"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uJC-eC-diR" secondAttribute="bottom" constant="26" id="Ram-ge-bKm" userLabel="Safe Area.bottom = card0.bottom + 30"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="9ZK-ky-LLw" secondAttribute="top" constant="59" id="WR8-GI-Pmc" userLabel="Safe Area.top = TurnColor.top"/>
-                            <constraint firstItem="YW3-nB-aOT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="ZDL-Yd-alv" userLabel="card0.leading = Safe Area.leading"/>
                             <constraint firstItem="9ZK-ky-LLw" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="1.26972" constant="-106.00000000000006" id="cIq-zO-Hpt"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YW3-nB-aOT" secondAttribute="bottom" constant="60" id="cNk-CW-XFw" userLabel="Safe Area.bottom = card0.bottom + 40"/>
                             <constraint firstItem="HGW-4k-csY" firstAttribute="top" secondItem="9ZK-ky-LLw" secondAttribute="bottom" constant="8" symbolic="YES" id="cSW-Ry-2tD" userLabel="card4.top = colorBar.bottom"/>
                             <constraint firstItem="HGW-4k-csY" firstAttribute="height" secondItem="ymF-eE-oZE" secondAttribute="height" id="dRz-45-ZXn"/>
+                            <constraint firstItem="uJC-eC-diR" firstAttribute="width" secondItem="HGW-4k-csY" secondAttribute="width" multiplier="1.41176" id="gLg-dE-v5W"/>
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hvg-2F-yT5"/>
                             <constraint firstItem="ymF-eE-oZE" firstAttribute="trailing" secondItem="9ZK-ky-LLw" secondAttribute="trailing" id="oX5-bs-O0I"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6dn-Wr-fi7" secondAttribute="trailing" constant="58" id="pCD-k2-5lF" userLabel="Safe Area.trailing = card1.trailing"/>
+                            <constraint firstItem="STP-aN-y5E" firstAttribute="centerY" secondItem="uJC-eC-diR" secondAttribute="centerY" id="qeu-Lb-RPF"/>
                             <constraint firstItem="Wxh-yR-hDx" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="qvi-13-0nb"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="card0" destination="YW3-nB-aOT" id="oPt-Mz-Cdh"/>
-                        <outlet property="card1" destination="6dn-Wr-fi7" id="Zew-9V-VWY"/>
+                        <outlet property="card0" destination="uJC-eC-diR" id="s9M-TS-Hfe"/>
+                        <outlet property="card1" destination="STP-aN-y5E" id="0XJ-nO-yfr"/>
                         <outlet property="card3" destination="HGW-4k-csY" id="7Qi-Ne-afL"/>
                         <outlet property="card4" destination="ymF-eE-oZE" id="7mA-aJ-KbU"/>
                         <outlet property="collectionView" destination="Wxh-yR-hDx" id="AFW-Nh-N0h"/>

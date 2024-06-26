@@ -17,6 +17,7 @@
 		963F92792C138D720016D0AC /* BoardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F92782C138D720016D0AC /* BoardItem.swift */; };
 		963F927B2C138D770016D0AC /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F927A2C138D770016D0AC /* Board.swift */; };
 		963F927D2C138D800016D0AC /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F927C2C138D800016D0AC /* Turn.swift */; };
+		968AE6302C2B8D6400EDB965 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968AE62F2C2B8D6400EDB965 /* test.swift */; };
 		96A2FC542C236CD200070A69 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A2FC532C236CD200070A69 /* Card.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		963F92782C138D720016D0AC /* BoardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardItem.swift; sourceTree = "<group>"; };
 		963F927A2C138D770016D0AC /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		963F927C2C138D800016D0AC /* Turn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
+		968AE62F2C2B8D6400EDB965 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		96A2FC532C236CD200070A69 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,6 +71,7 @@
 				963F92622C1282310016D0AC /* AppDelegate.swift */,
 				963F92642C1282310016D0AC /* SceneDelegate.swift */,
 				963F92662C1282310016D0AC /* ViewController.swift */,
+				968AE62F2C2B8D6400EDB965 /* test.swift */,
 				963F92782C138D720016D0AC /* BoardItem.swift */,
 				963F927A2C138D770016D0AC /* Board.swift */,
 				963F927C2C138D800016D0AC /* Turn.swift */,
@@ -157,6 +160,7 @@
 				963F92672C1282310016D0AC /* ViewController.swift in Sources */,
 				963F927B2C138D770016D0AC /* Board.swift in Sources */,
 				963F92632C1282310016D0AC /* AppDelegate.swift in Sources */,
+				968AE6302C2B8D6400EDB965 /* test.swift in Sources */,
 				963F92772C12861A0016D0AC /* BoardCell.swift in Sources */,
 				963F92652C1282310016D0AC /* SceneDelegate.swift in Sources */,
 				963F927D2C138D800016D0AC /* Turn.swift in Sources */,
